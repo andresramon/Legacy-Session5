@@ -182,8 +182,8 @@ namespace Trivia
 
         public bool WrongAnswer()
         {
-            Console.WriteLine("Question was incorrectly answered");
-            Console.WriteLine(_players[_currentPlayer] + " was sent to the penalty box");
+            DisplayLine("Question was incorrectly answered");
+            DisplayLine(_players[_currentPlayer] + " was sent to the penalty box");
             _inPenaltyBox[_currentPlayer] = true;
 
             _currentPlayer++;
@@ -195,6 +195,11 @@ namespace Trivia
         private bool DidPlayerWin()
         {
             return !(_purses[_currentPlayer] == 6);
+        }
+
+        protected virtual void DisplayLine(string text)
+        {
+            Console.WriteLine(text);
         }
     }
 
