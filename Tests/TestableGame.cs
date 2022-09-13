@@ -13,10 +13,20 @@ namespace Tests
         {
             consoleText.Add(text);
         }
-
+        
         public void ClearConsoleText()
         {
             consoleText.Clear();
+        }
+
+        public void SetPlayerInPenaltyBox(int numPlayer)
+        {
+            _inPenaltyBox[numPlayer] = true;
+        }
+
+        public int GetCurrentPlayer()
+        {
+            return _currentPlayer;
         }
     }
 }

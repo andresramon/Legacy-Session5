@@ -11,16 +11,17 @@ namespace Trivia
         private readonly int[] _places = new int[6];
         private readonly int[] _purses = new int[6];
 
-        private readonly bool[] _inPenaltyBox = new bool[6];
+        protected readonly bool[] _inPenaltyBox = new bool[6];
 
         private readonly LinkedList<string> _popQuestions = new LinkedList<string>();
         private readonly LinkedList<string> _scienceQuestions = new LinkedList<string>();
         private readonly LinkedList<string> _sportsQuestions = new LinkedList<string>();
         private readonly LinkedList<string> _rockQuestions = new LinkedList<string>();
 
-        private int _currentPlayer;
+        protected int _currentPlayer;
         private bool _isGettingOutOfPenaltyBox;
-
+        
+        
         public Game()
         {
             for (var i = 0; i < 50; i++)
