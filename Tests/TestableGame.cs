@@ -1,14 +1,22 @@
-﻿using System;
+﻿using System.Collections;
+using System.Collections.Generic;
 using Trivia;
 
-namespace Test;
-
-public class TestableGame:Game
+namespace Tests
 {
-    public string consoleText = "";
-    
-    protected override void DisplayLine(string text)
+
+    public class TestableGame : Game
     {
-        consoleText += text + (". ");
+        public List<string> consoleText = new List<string>();
+
+        protected override void DisplayLine(string text)
+        {
+            consoleText.Add(text);
+        }
+
+        public void ClearConsoleText()
+        {
+            consoleText.Clear();
+        }
     }
 }

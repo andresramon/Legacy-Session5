@@ -49,8 +49,8 @@ namespace Trivia
             _purses[HowManyPlayers()] = 0;
             _inPenaltyBox[HowManyPlayers()] = false;
 
-            Console.WriteLine(playerName + " was added");
-            Console.WriteLine("They are player number " + _players.Count);
+            DisplayLine(playerName + " was added");
+            DisplayLine("They are player number " + _players.Count);
             return true;
         }
 
@@ -165,12 +165,12 @@ namespace Trivia
             }
             else
             {
-                Console.WriteLine("Answer was corrent!!!!");
+                DisplayLine("Answer was corrent!!!!");
                 _purses[_currentPlayer]++;
-                Console.WriteLine(_players[_currentPlayer]
-                        + " now has "
-                        + _purses[_currentPlayer]
-                        + " Gold Coins.");
+                DisplayLine(_players[_currentPlayer]
+                            + " now has "
+                            + _purses[_currentPlayer]
+                            + " Gold Coins.");
 
                 var winner = DidPlayerWin();
                 _currentPlayer++;
