@@ -142,14 +142,111 @@ namespace Tests
             Assert.Equal(0, game.GetCurrentPlayer());
         }
 
+        [Theory]
+        [InlineData(1, 1 )]
+        [InlineData(12, 0)]
+        [InlineData(14, 2)]
+        public void RollMovesPlayerToNewPosition(int roll, int expectedLocation)
+        {
+            var game = TestableGame.SetupGame(2);
+            game.ClearConsoleText();
+            game.Roll(roll);
+            Assert.Equal("0's new location is "+expectedLocation, game.consoleText[2]);
+        }
+
         [Fact]
-        public void RollMovesPlayerToNewPosition()
+        public void ValidateRollAndPlayerWhenRolling()
         {
             var game = TestableGame.SetupGame(2);
             game.ClearConsoleText();
             game.Roll(1);
-            Assert.Equal("0's new location is 1", game.consoleText[0]);
+            Assert.Equal("0 is the current player", game.consoleText[0]);
+            Assert.Equal("They have rolled a 1", game.consoleText[1]);
         }
 
+        [Fact]
+        public void RollWhenPlayerIsInPenaltyBoxAndRollEven()
+        {
+            var game = TestableGame.SetupGame(2,true,false);
+            game.ClearConsoleText();
+            game.Roll(2);
+            Assert.Equal("0 is not getting out of the penalty box",game.consoleText[2]);
+            Assert.False(game.GetIsGettingOutOfPenaltyBox());
+        }
+        
+        [Fact]
+        public void CheckPlayerInPenaltyBoxRollOddAndIsGettingOutOfPenaltyBox()
+        {
+            var game = TestableGame.SetupGame(2,true,false);
+            game.ClearConsoleText();
+            game.Roll(3);
+            Assert.Equal("0 is getting out of the penalty box",game.consoleText[2]);
+            Assert.True(game.GetIsGettingOutOfPenaltyBox());
+        }
+        
+        [Theory]
+        [InlineData(1, 1 )]
+        [InlineData(13, 1)]
+        public void RollMovesPlayerInPenaltyBoxToNewPositionWhenRollIsOdd(int roll, int expectedLocation)
+        {
+            var game = TestableGame.SetupGame(2,true,false);
+            game.ClearConsoleText();
+            game.Roll(roll);
+            Assert.Equal("0's new location is "+expectedLocation, game.consoleText[3]);
+        }
+
+        [Theory]
+        [InlineData(true, 1,"Science")]
+        [InlineData(true, 5,"Science")]
+        [InlineData(true, 9,"Science")]
+        [InlineData(true, 3,"Rock")]
+        [InlineData(true, 7,"Rock")]
+        [InlineData(true, 11,"Rock")]
+        [InlineData(false, 0,"Pop")]
+        [InlineData(false, 4,"Pop")]
+        [InlineData(false, 8,"Pop")]
+        [InlineData(false, 12,"Pop")]
+        [InlineData(false, 1,"Science")]
+        [InlineData(false, 5,"Science")]
+        [InlineData(false, 9,"Science")]
+        [InlineData(false, 2,"Sports")]
+        [InlineData(false, 6,"Sports")]
+        [InlineData(false, 10,"Sports")]
+        [InlineData(false, 3,"Rock")]
+        [InlineData(false, 7,"Rock")]
+        [InlineData(false, 11,"Rock")]
+        
+        public void CheckCategoryDependingPlayerLocation(bool isinpenaltybox, int roll, string expectedCategory)
+        {
+            var game = TestableGame.SetupGame(2,isinpenaltybox,false);
+            game.ClearConsoleText();
+            game.Roll(roll);
+            if (isinpenaltybox)
+            {
+                Assert.Equal("The category is " + expectedCategory, game.consoleText[4]);
+            }
+            else
+            {
+                Assert.Equal("The category is " + expectedCategory, game.consoleText[3]);
+            }
+        }
+        
+        // [Theory]
+        
+        // public void CheckCategoryQuestionDependingOnPlayerLocation(bool isinpenaltybox, int roll, string expectedCategory)
+        // {
+        //     var game = TestableGame.SetupGame(2,isinpenaltybox,false);
+        //     game.ClearConsoleText();
+        //     game.Roll(roll);
+        //     if (isinpenaltybox)
+        //     {
+        //         Assert.Equal("The category is " + expectedCategory, game.consoleText[4]);
+        //     }
+        //     else
+        //     {
+        //         Assert.Equal("The category is " + expectedCategory, game.consoleText[3]);
+        //     }
+        // }
+        
     }
 }

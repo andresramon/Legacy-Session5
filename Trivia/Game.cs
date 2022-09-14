@@ -62,8 +62,8 @@ namespace Trivia
 
         public void Roll(int roll)
         {
-            Console.WriteLine(_players[_currentPlayer] + " is the current player");
-            Console.WriteLine("They have rolled a " + roll);
+            DisplayLine(_players[_currentPlayer] + " is the current player");
+            DisplayLine("They have rolled a " + roll);
 
             if (_inPenaltyBox[_currentPlayer])
             {
@@ -71,19 +71,19 @@ namespace Trivia
                 {
                     _isGettingOutOfPenaltyBox = true;
 
-                    Console.WriteLine(_players[_currentPlayer] + " is getting out of the penalty box");
+                    DisplayLine(_players[_currentPlayer] + " is getting out of the penalty box");
                     _places[_currentPlayer] = _places[_currentPlayer] + roll;
                     if (_places[_currentPlayer] > 11) _places[_currentPlayer] = _places[_currentPlayer] - 12;
 
-                    Console.WriteLine(_players[_currentPlayer]
+                    DisplayLine(_players[_currentPlayer]
                             + "'s new location is "
                             + _places[_currentPlayer]);
-                    Console.WriteLine("The category is " + CurrentCategory());
+                    DisplayLine("The category is " + CurrentCategory());
                     AskQuestion();
                 }
                 else
                 {
-                    Console.WriteLine(_players[_currentPlayer] + " is not getting out of the penalty box");
+                    DisplayLine(_players[_currentPlayer] + " is not getting out of the penalty box");
                     _isGettingOutOfPenaltyBox = false;
                 }
             }

@@ -33,6 +33,10 @@ namespace Tests
         {
             return _currentPlayer;
         }
+        public bool GetIsGettingOutOfPenaltyBox()
+        {
+            return _isGettingOutOfPenaltyBox;
+        }
 
         public static TestableGame SetupGame(int numPlayer)
         {
