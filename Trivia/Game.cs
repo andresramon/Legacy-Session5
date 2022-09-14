@@ -19,7 +19,7 @@ namespace Trivia
         private readonly LinkedList<string> _rockQuestions = new LinkedList<string>();
 
         protected int _currentPlayer;
-        private bool _isGettingOutOfPenaltyBox;
+        protected bool _isGettingOutOfPenaltyBox;
         
         
         public Game()
@@ -92,10 +92,10 @@ namespace Trivia
                 _places[_currentPlayer] = _places[_currentPlayer] + roll;
                 if (_places[_currentPlayer] > 11) _places[_currentPlayer] = _places[_currentPlayer] - 12;
 
-                Console.WriteLine(_players[_currentPlayer]
+                DisplayLine(_players[_currentPlayer]
                         + "'s new location is "
                         + _places[_currentPlayer]);
-                Console.WriteLine("The category is " + CurrentCategory());
+                DisplayLine("The category is " + CurrentCategory());
                 AskQuestion();
             }
         }
@@ -144,9 +144,9 @@ namespace Trivia
             {
                 if (_isGettingOutOfPenaltyBox)
                 {
-                    Console.WriteLine("Answer was correct!!!!");
+                    DisplayLine("Answer was correct!!!!");
                     _purses[_currentPlayer]++;
-                    Console.WriteLine(_players[_currentPlayer]
+                    DisplayLine(_players[_currentPlayer]
                             + " now has "
                             + _purses[_currentPlayer]
                             + " Gold Coins.");

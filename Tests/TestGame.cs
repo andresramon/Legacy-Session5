@@ -10,34 +10,23 @@ namespace Tests
         [InlineData(1, false)]
         public void GameReadyToStart(int playersNumber, bool expectedReadyToStart)
         {
-            var game = SetupGame(playersNumber);
+            var game = TestableGame.SetupGame(playersNumber);
             Assert.Equal(expectedReadyToStart,game.IsPlayable());
         }
 
         [Fact]
         public void CheckWrongAnswer()
         {
-            var game = SetupGame(2);
+            var game = TestableGame.SetupGame(2);
             game.WrongAnswer();
             Assert.Equal("Question was incorrectly answered",game.consoleText[4]);
             Assert.Equal("0 was sent to the penalty box",game.consoleText[5]);
         }
 
-        private static TestableGame SetupGame(int numPlayer)
-        {
-            TestableGame game = new TestableGame();
-            for (int iPlayer = 0; iPlayer < numPlayer; iPlayer++)
-            {
-                game.Add(iPlayer.ToString());
-            }
-
-            return game;
-        }
-
         [Fact]
         public void CheckWrongAnswerOfLastPlayerGoesBackToFirstPlayer()
         {
-            var game = SetupGame(2);
+            var game = TestableGame.SetupGame(2);
             game.WrongAnswer();
             game.WrongAnswer();
             game.ClearConsoleText();
@@ -57,25 +46,25 @@ namespace Tests
         [Fact]
         public void CheckCorrectAnsweredPlayerNotInPenaltyBox()
         {
-            var game = SetupGame(2);
+            var game = TestableGame.SetupGame(2);
             game.ClearConsoleText();
             game.WasCorrectlyAnswered();
             Assert.Equal("Answer was corrent!!!!",game.consoleText[0]);
         }
         
         [Fact]
-        public void PlayerEarnsACoinAfterCorrectAnswer()
+        public void PlayerIfNotInPenaltyBoxEarnsACoinAfterCorrectAnswer()
         {
-            var game = SetupGame(2);
+            var game = TestableGame.SetupGame(2);
             game.ClearConsoleText();
             game.WasCorrectlyAnswered();
             Assert.Equal("0 now has 1 Gold Coins.",game.consoleText[1]);
         }
 
         [Fact]
-        public void CheckIfPlayerWinOnlyWhenHeHasSixCoins()
+        public void CheckIfPlayerNotInPenaltyBoxWinOnlyWhenHeHasSixCoins()
         {
-            var game = SetupGame(2);
+            var game = TestableGame.SetupGame(2);
 
             for (int answer = 0; answer < 10; answer++)
             {
@@ -87,7 +76,7 @@ namespace Tests
         [Fact]
         public void CheckCorrectAnswerOfLastPlayerGoesBackToFirstPlayer()
         {
-            var game = SetupGame(2);
+            var game = TestableGame.SetupGame(2);
             game.WasCorrectlyAnswered();
             game.WasCorrectlyAnswered();
             game.ClearConsoleText();
@@ -98,10 +87,68 @@ namespace Tests
         [Fact]
         public void CheckIfPlayerIsInPenaltyBoxOnlyGoToNextPlayer()
         {
-            var game = SetupGame(2);
+            var game = TestableGame.SetupGame(2);
             game.SetPlayerInPenaltyBox(0);
             game.WasCorrectlyAnswered();
             Assert.Equal(1,game.GetCurrentPlayer());
+        }
+
+        [Fact]
+        public void CheckIfLastPlayerIsInPenaltyBoxGoToFirstPlayer()
+        {
+            var game = TestableGame.SetupGame(2, true, false);
+            game.WasCorrectlyAnswered();
+            game.WasCorrectlyAnswered();
+            Assert.Equal(0, game.GetCurrentPlayer());
+        }
+
+        [Fact]
+        public void CheckIfPlayerGettingOutOfPenaltyBoxAnswerIsCorrect()
+        {
+            var game = TestableGame.SetupGame(2, true, true);
+            game.ClearConsoleText();
+            game.WasCorrectlyAnswered();
+            Assert.Equal("Answer was correct!!!!", game.consoleText[0]);
+        }
+
+        [Fact]
+        public void PlayerGettingOutOfPenaltyBoxEarnsACoinAfterCorrectAnswer()
+        {
+            var game = TestableGame.SetupGame(2, true, true);
+            game.ClearConsoleText();
+            game.WasCorrectlyAnswered();
+            Assert.Equal("0 now has 1 Gold Coins.", game.consoleText[1]);
+        }
+
+        [Fact]
+        public void PlayerGettingOutOfPenaltyBoxWinOnlyWhenHeHasSixCoins()
+        {
+            var game = TestableGame.SetupGame(2, true, true);
+
+            for (int answer = 0; answer < 10; answer++)
+            {
+                Assert.True(game.WasCorrectlyAnswered());
+            }
+
+            Assert.False(game.WasCorrectlyAnswered());
+        }
+
+        [Fact]
+        public void CheckIfLastPlayerGettingOutOfPenaltyBoxGoToFirstPlayer()
+        {
+            var game = TestableGame.SetupGame(2, true, true);
+            game.WasCorrectlyAnswered();
+            game.WasCorrectlyAnswered();
+            Assert.Equal(0, game.GetCurrentPlayer());
+        }
+
+        [Fact]
+        public void RollMovesPlayerToNewPosition()
+        {
+            var game = TestableGame.SetupGame(2);
+            game.ClearConsoleText();
+            game.Roll(1);
+            Assert.Equal("0's new location is 1", game.consoleText[0]);
         }
 
     }
