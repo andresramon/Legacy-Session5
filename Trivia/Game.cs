@@ -20,39 +20,54 @@ namespace Trivia
 
         protected int _currentPlayer;
         protected bool _isGettingOutOfPenaltyBox;
-        
+        protected const int _numMinPlayers = 2;
+        protected const int _numMaxQuestions = 50;
         
         public Game()
         {
-            for (var i = 0; i < 50; i++)
+            for (var i = 0; i < _numMaxQuestions; i++)
             {
-                _popQuestions.AddLast("Pop Question " + i);
-                _scienceQuestions.AddLast(("Science Question " + i));
-                _sportsQuestions.AddLast(("Sports Question " + i));
-                _rockQuestions.AddLast(CreateRockQuestion(i));
+                _popQuestions.AddLast(CreateCategoryQuestion("Pop", i));
+                _scienceQuestions.AddLast(CreateCategoryQuestion("Science", i));
+                _sportsQuestions.AddLast(CreateCategoryQuestion("Sports", i));
+                _rockQuestions.AddLast(CreateCategoryQuestion("Rock", i));
             }
         }
 
+        private string CreateCategoryQuestion(string Category, int index)
+        {
+            return Category + " Question " + index;
+        }
         public string CreateRockQuestion(int index)
         {
-            return "Rock Question " + index;
+            return CreateCategoryQuestion("Rock", index);
         }
 
         public bool IsPlayable()
         {
-            return (HowManyPlayers() >= 2);
+            return (HowManyPlayers() >= _numMinPlayers);
         }
 
         public bool Add(string playerName)
+        {
+            InitializePlayer(playerName);
+
+            DisplayInitializePlayer(playerName);
+            return true;
+        }
+
+        private void DisplayInitializePlayer(string playerName)
+        {
+            DisplayLine(playerName + " was added");
+            DisplayLine("They are player number " + _players.Count);
+        }
+
+        private void InitializePlayer(string playerName)
         {
             _players.Add(playerName);
             _places[HowManyPlayers()] = 0;
             _purses[HowManyPlayers()] = 0;
             _inPenaltyBox[HowManyPlayers()] = false;
-
-            DisplayLine(playerName + " was added");
-            DisplayLine("They are player number " + _players.Count);
-            return true;
         }
 
         public int HowManyPlayers()
@@ -62,23 +77,16 @@ namespace Trivia
 
         public void Roll(int roll)
         {
-            DisplayLine(_players[_currentPlayer] + " is the current player");
-            DisplayLine("They have rolled a " + roll);
+            DisplayCurrentPlayerRoll(roll);
 
-            if (_inPenaltyBox[_currentPlayer])
+            if (IsCurrentPlayerInPenaltyBox())
             {
-                if (roll % 2 != 0)
+                if (IsEvenRoll(roll))
                 {
                     _isGettingOutOfPenaltyBox = true;
 
                     DisplayLine(_players[_currentPlayer] + " is getting out of the penalty box");
-                    _places[_currentPlayer] = _places[_currentPlayer] + roll;
-                    if (_places[_currentPlayer] > 11) _places[_currentPlayer] = _places[_currentPlayer] - 12;
-
-                    DisplayLine(_players[_currentPlayer]
-                            + "'s new location is "
-                            + _places[_currentPlayer]);
-                    DisplayLine("The category is " + CurrentCategory());
+                    MoveCurrentPlayerToNewLocation(roll);
                     AskQuestion();
                 }
                 else
@@ -89,39 +97,68 @@ namespace Trivia
             }
             else
             {
-                _places[_currentPlayer] = _places[_currentPlayer] + roll;
-                if (_places[_currentPlayer] > 11) _places[_currentPlayer] = _places[_currentPlayer] - 12;
-
-                DisplayLine(_players[_currentPlayer]
-                        + "'s new location is "
-                        + _places[_currentPlayer]);
-                DisplayLine("The category is " + CurrentCategory());
+                MoveCurrentPlayerToNewLocation(roll);
                 AskQuestion();
             }
         }
+
+        private bool IsCurrentPlayerInPenaltyBox()
+        {
+            return _inPenaltyBox[_currentPlayer];
+        }
+
+        private void DisplayCurrentPlayerRoll(int roll)
+        {
+            DisplayLine(_players[_currentPlayer] + " is the current player");
+            DisplayLine("They have rolled a " + roll);
+        }
+
+        private void MoveCurrentPlayerToNewLocation(int roll)
+        {
+            _places[_currentPlayer] = _places[_currentPlayer] + roll;
+            if (_places[_currentPlayer] > 11) _places[_currentPlayer] = _places[_currentPlayer] - 12;
+
+            DisplayMovementCurrentPlayer();
+        }
+
+        private void DisplayMovementCurrentPlayer()
+        {
+            DisplayLine(_players[_currentPlayer]
+                        + "'s new location is "
+                        + _places[_currentPlayer]);
+            DisplayLine("The category is " + CurrentCategory());
+        }
+
+        private static bool IsEvenRoll(int roll)
+        {
+            return roll % 2 != 0;
+        }
+
 
         private void AskQuestion()
         {
             if (CurrentCategory() == "Pop")
             {
-                DisplayLine(_popQuestions.First());
-                _popQuestions.RemoveFirst();
+                AskQuestionCategory(_popQuestions);
             }
             if (CurrentCategory() == "Science")
             {
-                DisplayLine(_scienceQuestions.First());
-                _scienceQuestions.RemoveFirst();
+                AskQuestionCategory(_scienceQuestions);
             }
             if (CurrentCategory() == "Sports")
             {
-                DisplayLine(_sportsQuestions.First());
-                _sportsQuestions.RemoveFirst();
+                AskQuestionCategory(_sportsQuestions);
             }
             if (CurrentCategory() == "Rock")
             {
-                DisplayLine(_rockQuestions.First());
-                _rockQuestions.RemoveFirst();
+                AskQuestionCategory(_rockQuestions);
             }
+        }
+
+        private void AskQuestionCategory(LinkedList<string> questionList)
+        {
+            DisplayLine(questionList.First());
+            questionList.RemoveFirst();
         }
 
         private string CurrentCategory()
