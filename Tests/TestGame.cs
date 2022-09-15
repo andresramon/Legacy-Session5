@@ -216,12 +216,12 @@ namespace Tests
         [InlineData(false, 7,"Rock")]
         [InlineData(false, 11,"Rock")]
         
-        public void CheckCategoryDependingPlayerLocation(bool isinpenaltybox, int roll, string expectedCategory)
+        public void CheckCategoryDependingPlayerLocation(bool isInPenaltyBox, int roll, string expectedCategory)
         {
-            var game = TestableGame.SetupGame(2,isinpenaltybox,false);
+            var game = TestableGame.SetupGame(2,isInPenaltyBox,false);
             game.ClearConsoleText();
             game.Roll(roll);
-            if (isinpenaltybox)
+            if (isInPenaltyBox)
             {
                 Assert.Equal("The category is " + expectedCategory, game.consoleText[4]);
             }
@@ -231,22 +231,41 @@ namespace Tests
             }
         }
         
-        // [Theory]
+        [Theory]
+        [InlineData(true, 1, "Science Question 0")]
+        [InlineData(true, 3,"Rock Question 0")]
+        [InlineData(false, 0,"Pop Question 0")]
+        [InlineData(false, 2,"Sports Question 0")]
+        public void CheckCategoryQuestionDependingOnPlayerLocation(bool isInPenaltyBox, int roll, string expectedCategoryQuestion)
+        {
+            var game = TestableGame.SetupGame(2,isInPenaltyBox,false);
+            game.ClearConsoleText();
+            game.Roll(roll);
+            if (isInPenaltyBox)
+            {
+                
+                Assert.Equal(expectedCategoryQuestion, game.consoleText[5]);
+            }
+            else
+            {
+                Assert.Equal(expectedCategoryQuestion, game.consoleText[4]);
+            }
+        }
         
-        // public void CheckCategoryQuestionDependingOnPlayerLocation(bool isinpenaltybox, int roll, string expectedCategory)
-        // {
-        //     var game = TestableGame.SetupGame(2,isinpenaltybox,false);
-        //     game.ClearConsoleText();
-        //     game.Roll(roll);
-        //     if (isinpenaltybox)
-        //     {
-        //         Assert.Equal("The category is " + expectedCategory, game.consoleText[4]);
-        //     }
-        //     else
-        //     {
-        //         Assert.Equal("The category is " + expectedCategory, game.consoleText[3]);
-        //     }
-        // }
-        
+        [Theory]
+        [InlineData(false, 1, 4, "Science Question 1")]
+        [InlineData(false, 3, 4,"Rock Question 1")]
+        [InlineData(false, 4, 4,"Pop Question 1")]
+        [InlineData(false, 2, 4,"Sports Question 1")]
+        public void CheckCategoryQuestionRemovalAfterRoll(bool isInPenaltyBox, int roll, int roll2, string expectedCategoryQuestion)
+        {
+            var game = TestableGame.SetupGame(2,isInPenaltyBox,false);
+            game.Roll(roll);
+            game.ClearConsoleText();
+            
+            game.Roll(roll2);
+            Assert.Equal(expectedCategoryQuestion, game.consoleText[4]);
+           
+        }
     }
 }

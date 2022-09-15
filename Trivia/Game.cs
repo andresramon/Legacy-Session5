@@ -104,22 +104,22 @@ namespace Trivia
         {
             if (CurrentCategory() == "Pop")
             {
-                Console.WriteLine(_popQuestions.First());
+                DisplayLine(_popQuestions.First());
                 _popQuestions.RemoveFirst();
             }
             if (CurrentCategory() == "Science")
             {
-                Console.WriteLine(_scienceQuestions.First());
+                DisplayLine(_scienceQuestions.First());
                 _scienceQuestions.RemoveFirst();
             }
             if (CurrentCategory() == "Sports")
             {
-                Console.WriteLine(_sportsQuestions.First());
+                DisplayLine(_sportsQuestions.First());
                 _sportsQuestions.RemoveFirst();
             }
             if (CurrentCategory() == "Rock")
             {
-                Console.WriteLine(_rockQuestions.First());
+                DisplayLine(_rockQuestions.First());
                 _rockQuestions.RemoveFirst();
             }
         }
