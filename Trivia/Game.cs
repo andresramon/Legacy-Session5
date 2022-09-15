@@ -88,18 +88,16 @@ namespace Trivia
                     DisplayLine(_players[_currentPlayer] + " is getting out of the penalty box");
                     MoveCurrentPlayerToNewLocation(roll);
                     AskQuestion();
+                    return;
                 }
-                else
-                {
-                    DisplayLine(_players[_currentPlayer] + " is not getting out of the penalty box");
-                    _isGettingOutOfPenaltyBox = false;
-                }
+                
+                DisplayLine(_players[_currentPlayer] + " is not getting out of the penalty box");
+                _isGettingOutOfPenaltyBox = false;
+                return;
             }
-            else
-            {
-                MoveCurrentPlayerToNewLocation(roll);
-                AskQuestion();
-            }
+            
+            MoveCurrentPlayerToNewLocation(roll);
+            AskQuestion();
         }
 
         private bool IsCurrentPlayerInPenaltyBox()
@@ -140,18 +138,22 @@ namespace Trivia
             if (CurrentCategory() == "Pop")
             {
                 AskQuestionCategory(_popQuestions);
+                return;
             }
             if (CurrentCategory() == "Science")
             {
                 AskQuestionCategory(_scienceQuestions);
+                return;
             }
             if (CurrentCategory() == "Sports")
             {
                 AskQuestionCategory(_sportsQuestions);
+                return;
             }
             if (CurrentCategory() == "Rock")
             {
                 AskQuestionCategory(_rockQuestions);
+                return;
             }
         }
 
@@ -163,59 +165,72 @@ namespace Trivia
 
         private string CurrentCategory()
         {
-            if (_places[_currentPlayer] == 0) return "Pop";
-            if (_places[_currentPlayer] == 4) return "Pop";
-            if (_places[_currentPlayer] == 8) return "Pop";
-            if (_places[_currentPlayer] == 1) return "Science";
-            if (_places[_currentPlayer] == 5) return "Science";
-            if (_places[_currentPlayer] == 9) return "Science";
-            if (_places[_currentPlayer] == 2) return "Sports";
-            if (_places[_currentPlayer] == 6) return "Sports";
-            if (_places[_currentPlayer] == 10) return "Sports";
+            if (IsPopCategory())
+            {
+                return "Pop";
+            }
+
+            if (IsScienceCategory())
+            {
+                return "Science";
+            }
+
+            if (IsSportsCategory())
+            {
+                return "Sports";
+            }
+
             return "Rock";
+        }
+
+        private bool IsSportsCategory()
+        {
+            return _places[_currentPlayer] == 2 || _places[_currentPlayer] == 6 || _places[_currentPlayer] == 10;
+        }
+
+        private bool IsScienceCategory()
+        {
+            return _places[_currentPlayer] == 1 || _places[_currentPlayer] == 5 || _places[_currentPlayer] == 9;
+        }
+
+        private bool IsPopCategory()
+        {
+            return _places[_currentPlayer] == 0 || _places[_currentPlayer] == 4 || _places[_currentPlayer] == 8;
         }
 
         public bool WasCorrectlyAnswered()
         {
-            if (_inPenaltyBox[_currentPlayer])
+            if (IsCurrentPlayerInPenaltyBox() && !_isGettingOutOfPenaltyBox)
             {
-                if (_isGettingOutOfPenaltyBox)
-                {
-                    DisplayLine("Answer was correct!!!!");
-                    _purses[_currentPlayer]++;
-                    DisplayLine(_players[_currentPlayer]
-                            + " now has "
-                            + _purses[_currentPlayer]
-                            + " Gold Coins.");
-
-                    var winner = DidPlayerWin();
-                    _currentPlayer++;
-                    if (_currentPlayer == _players.Count) _currentPlayer = 0;
-
-                    return winner;
-                }
-                else
-                {
-                    _currentPlayer++;
-                    if (_currentPlayer == _players.Count) _currentPlayer = 0;
-                    return true;
-                }
+                ChangeToNextPlayer();
+                return true;
             }
-            else
-            {
-                DisplayLine("Answer was corrent!!!!");
-                _purses[_currentPlayer]++;
-                DisplayLine(_players[_currentPlayer]
-                            + " now has "
-                            + _purses[_currentPlayer]
-                            + " Gold Coins.");
+            
+            return CheckIfWinnerWithCorrectAnswer();
+        }
 
-                var winner = DidPlayerWin();
-                _currentPlayer++;
-                if (_currentPlayer == _players.Count) _currentPlayer = 0;
+        private bool CheckIfWinnerWithCorrectAnswer()
+        {
+            DisplayCorrectAnswerAndIncrementsCurrentCoins();
+            var winner = DidPlayerWin();
+            ChangeToNextPlayer();
+            return winner;
+        }
 
-                return winner;
-            }
+        private void DisplayCorrectAnswerAndIncrementsCurrentCoins()
+        {
+            DisplayLine("Answer was correct!!!!");
+            _purses[_currentPlayer]++;
+            DisplayLine(_players[_currentPlayer]
+                    + " now has "
+                    + _purses[_currentPlayer]
+                    + " Gold Coins.");
+        }
+
+        private void ChangeToNextPlayer()
+        {
+            _currentPlayer++;
+            if (_currentPlayer == _players.Count) _currentPlayer = 0;
         }
 
         public bool WrongAnswer()

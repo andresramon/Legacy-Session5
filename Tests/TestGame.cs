@@ -49,7 +49,7 @@ namespace Tests
             var game = TestableGame.SetupGame(2);
             game.ClearConsoleText();
             game.WasCorrectlyAnswered();
-            Assert.Equal("Answer was corrent!!!!",game.consoleText[0]);
+            Assert.Equal("Answer was correct!!!!",game.consoleText[0]);
         }
         
         [Fact]
