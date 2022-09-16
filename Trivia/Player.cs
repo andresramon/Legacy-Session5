@@ -60,18 +60,15 @@ public class Player
         inPenaltyBox = true;
     }
 
-    public string GetCategory()
+    public Questionare.Categories GetCategory()
     {
         int playersPlace = this.GetLocation();
-        if (playersPlace == 0) return "Pop";
-        if (playersPlace == 4) return "Pop";
-        if (playersPlace == 8) return "Pop";
-        if (playersPlace == 1) return "Science";
-        if (playersPlace == 5) return "Science";
-        if (playersPlace == 9) return "Science";
-        if (playersPlace == 2) return "Sports";
-        if (playersPlace == 6) return "Sports";
-        if (playersPlace == 10) return "Sports";
-        return "Rock";
+        return playersPlace switch
+        {
+            0 or 4 or 8 => Questionare.Categories.Pop,
+            1 or 5 or 9 => Questionare.Categories.Science,
+            2 or 6 or 10 => Questionare.Categories.Sports,
+            _ => Questionare.Categories.Rock
+        };
     }
 }

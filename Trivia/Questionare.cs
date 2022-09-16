@@ -5,6 +5,13 @@ namespace Trivia;
 
 public class Questionare
 {
+    public enum Categories
+    {
+        Pop,
+        Science,
+        Sports,
+        Rock
+    }
     private readonly LinkedList<string> _popQuestions = new LinkedList<string>();
     private readonly LinkedList<string> _scienceQuestions = new LinkedList<string>();
     private readonly LinkedList<string> _sportsQuestions = new LinkedList<string>();
@@ -19,36 +26,47 @@ public class Questionare
     {
         for (var i = 0; i < 50; i++)
         {
-            this._popQuestions.AddLast("Pop Question " + i);
-            this._scienceQuestions.AddLast(("Science Question " + i));
-            this._sportsQuestions.AddLast(("Sports Question " + i));
-            this._rockQuestions.AddLast("Rock Question " + i);
+            this._popQuestions.AddLast($"{Categories.Pop} Question " + i);
+            this._scienceQuestions.AddLast($"{Categories.Science} Question " + i);
+            this._sportsQuestions.AddLast($"{Categories.Sports} Question " + i);
+            this._rockQuestions.AddLast($"{Categories.Rock} Question " + i);
         }
     }
 
-    public void AskQuestion(string currentCategory)
+    public void AskQuestion(Categories currentCategory)
     {
-        Console.WriteLine("The category is " + currentCategory);
         
-        if (currentCategory == "Pop")
+        var questionsList = GetListByCategory(currentCategory);
+        
+        Console.WriteLine("The category is " + currentCategory);
+        Console.WriteLine(questionsList.First());
+        
+        questionsList.RemoveFirst();
+        
+    }
+
+    private LinkedList<string> GetListByCategory(Categories currentCategory)
+    {
+        LinkedList<string> questionsList;
+        switch (currentCategory)
         {
-            Console.WriteLine(_popQuestions.First());
-            this._popQuestions.RemoveFirst();
+            case Categories.Pop:
+                questionsList = _popQuestions;
+                break;
+            case Categories.Science:
+                questionsList = _scienceQuestions;
+                break;
+            case Categories.Sports:
+                questionsList = _sportsQuestions;
+                break;
+            case Categories.Rock:
+                questionsList = _rockQuestions;
+                break;
+            default:
+                questionsList = _rockQuestions;
+                break;
         }
-        if (currentCategory == "Science")
-        {
-            Console.WriteLine(this._scienceQuestions.First());
-            this._scienceQuestions.RemoveFirst();
-        }
-        if (currentCategory == "Sports")
-        {
-            Console.WriteLine(this._sportsQuestions.First());
-            this._sportsQuestions.RemoveFirst();
-        }
-        if (currentCategory == "Rock")
-        {
-            Console.WriteLine(this._rockQuestions.First());
-            this._rockQuestions.RemoveFirst();
-        }
+
+        return questionsList;
     }
 }
