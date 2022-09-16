@@ -6,11 +6,11 @@ namespace Trivia;
 public class Players
 {
     private int _currentPlayer;
-    
-    public readonly List<string> _players = new List<string>();
-    public readonly int[] _places = new int[6];
-    public readonly int[] _purses = new int[6];
-    public readonly bool[] _inPenaltyBox = new bool[6];
+
+    private readonly List<string> _players = new List<string>();
+    private readonly int[] _places = new int[6];
+    private readonly int[] _purses = new int[6];
+    private readonly bool[] _inPenaltyBox = new bool[6];
 
     public Players()
     {
