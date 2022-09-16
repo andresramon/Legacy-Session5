@@ -26,12 +26,7 @@ namespace Trivia
 
         public bool IsPlayable()
         {
-            return (HowManyPlayers() >= 2);
-        }
-
-        public int HowManyPlayers()
-        {
-            return Players._players.Count;
+            return (Players.PlayersCount() >= 2);
         }
 
         public void Roll(int roll)
