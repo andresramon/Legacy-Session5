@@ -40,7 +40,7 @@ public class Player
         
     }
 
-    public bool DidPlayerWinn()
+    public bool DidPlayerWin()
     {
         return !(purse == 6);
     }

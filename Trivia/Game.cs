@@ -10,22 +10,17 @@ namespace Trivia
         private bool _isGettingOutOfPenaltyBox;
         private readonly Questionare _questionare;
         private readonly Players _players;
+        private Player currentPlayer =>_players.getCurrentPlayer();
 
+        public void AddPlayer(string name) => _players.Add(name);
+        public bool IsPlayable() => (_players.PlayersCount() >= 2);
+        
         public Game()
         {
             _questionare = new Questionare();
             _players = new Players();
         }
-
-        public void AddPlayer(string name)
-        {
-            _players.Add(name);
-        }
-
-        public bool IsPlayable()
-        {
-            return (_players.PlayersCount() >= 2);
-        }
+      
 
         public void Roll(int roll)
         {
@@ -34,7 +29,7 @@ namespace Trivia
             Console.WriteLine(playerName + " is the current player");
             Console.WriteLine("They have rolled a " + roll);
 
-            if (_players.IsCurrentPlayerInPenaltyBox())
+            if (currentPlayer.IsInPenaltyBox())
             {
                 if (IsEvenRoll(roll))
                 {
@@ -50,25 +45,21 @@ namespace Trivia
                 }
             }
             
-            _players.MoveCurrentPlayer(roll);
-            _questionare.AskQuestion(_players.CurrentCategory());
+            currentPlayer.MovePlayer(roll);
+            _questionare.AskQuestion(currentPlayer.GetCategory());
         }
-
-        private bool IsEvenRoll(int roll)
-        {
-            return roll % 2 == 0;
-        }
+        
 
         public bool WasCorrectlyAnswered()
         {
-            if (_players.IsCurrentPlayerInPenaltyBox() && !_isGettingOutOfPenaltyBox)
+            if (currentPlayer.IsInPenaltyBox() && !_isGettingOutOfPenaltyBox)
             {
                 _players.NextPlayerTurn();
                 return true;
             }
 
-            _players.CorrectlyAnswered();
-            var winner = _players.DidPlayerWin();
+            currentPlayer.CorrectlyAnswered();
+            var winner = currentPlayer.DidPlayerWin();
             _players.NextPlayerTurn();
 
             return winner;
@@ -77,10 +68,11 @@ namespace Trivia
         public bool WrongAnswer()
         {
             Console.WriteLine("Question was incorrectly answered");
-            _players.SetCurrentPlayerInPenaltyBox();
+            currentPlayer.MoveToPenaltyBox();
             _players.NextPlayerTurn();
             return true;
         }
+        private bool IsEvenRoll(int roll) => roll % 2 == 0;
     }
 
 }
