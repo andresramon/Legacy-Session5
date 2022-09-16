@@ -7,21 +7,23 @@ namespace Tests
 
     public class TestableGame : Game
     {
-        public List<string> consoleText = new List<string>();
+        public TestableOutputInfoGame outputDevice;
+        public new QuestionsPackage questions;
+
+        public TestableGame()
+        {
+            outputDevice = new TestableOutputInfoGame();
+            questions = new QuestionsPackage(outputDevice);
+        }
 
         protected override void DisplayLine(string text)
         {
-            consoleText.Add(text);
+            outputDevice.DisplayLine(text);
         }
         
         public void ClearConsoleText()
         {
-            consoleText.Clear();
-        }
-
-        public void SetPlayerInPenaltyBox(int numPlayer)
-        {
-            _inPenaltyBox[numPlayer] = true;
+            outputDevice.ClearConsoleText();
         }
 
         public void SetIsGettingOutOfPenaltyBox(bool value)
@@ -64,6 +66,11 @@ namespace Tests
 
             game.SetIsGettingOutOfPenaltyBox(isGettinOutOfPenaltyBox);
             return game;
+        }
+
+        public new void SetPlayerInPenaltyBox(int numPlayer)
+        {
+            base.SetPlayerInPenaltyBox(numPlayer);
         }
     }
 }
