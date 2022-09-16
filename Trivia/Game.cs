@@ -24,6 +24,12 @@ namespace Trivia
             get { return _players; }
         }
 
+        public int CurrentPlayer
+        {
+            set { _currentPlayer = value; }
+            get { return _currentPlayer; }
+        }
+
         public bool IsPlayable()
         {
             return (Players.PlayersCount() >= 2);
@@ -41,12 +47,8 @@ namespace Trivia
                     _isGettingOutOfPenaltyBox = true;
 
                     Console.WriteLine(currentPlayer + " is getting out of the penalty box");
-                    Players._places[_currentPlayer] = Players._places[_currentPlayer] + roll;
-                    if (Players._places[_currentPlayer] > 11) Players._places[_currentPlayer] = Players._places[_currentPlayer] - 12;
-
-                    Console.WriteLine(currentPlayer
-                                      + "'s new location is "
-                                      + Players._places[_currentPlayer]);
+                    Players.MoveCurrentPlayer(roll, _currentPlayer);
+                                     
                     Console.WriteLine("The category is " + CurrentCategory());
                     _questionare.AskQuestion(CurrentCategory());
                 }
@@ -58,12 +60,7 @@ namespace Trivia
             }
             else
             {
-                Players._places[_currentPlayer] = Players._places[_currentPlayer] + roll;
-                if (Players._places[_currentPlayer] > 11) Players._places[_currentPlayer] = Players._places[_currentPlayer] - 12;
-
-                Console.WriteLine(currentPlayer
-                                  + "'s new location is "
-                                  + Players._places[_currentPlayer]);
+                Players.MoveCurrentPlayer(roll, _currentPlayer);
                 Console.WriteLine("The category is " + CurrentCategory());
                 _questionare.AskQuestion(CurrentCategory());
             }

@@ -32,4 +32,13 @@ public class Players
     {
         return this._players.Count;
     }
+
+    public void MoveCurrentPlayer(int roll, int currentPlayer)
+    {
+        this._places[currentPlayer] = this._places[currentPlayer] + roll;
+        if (_places[currentPlayer] > 11) _places[currentPlayer] = _places[currentPlayer] - 12;
+
+        Console.WriteLine(_players[currentPlayer] + "'s new location is " + _places[currentPlayer]);
+
+    }
 }
