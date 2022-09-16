@@ -8,9 +8,6 @@ public class Players
     private int _currentPlayer=0;
 
     private readonly List<Player> _players = new List<Player>();
-    private readonly int[] _places = new int[6];
-    private readonly int[] _purses = new int[6];
-    private readonly bool[] _inPenaltyBox = new bool[6];
 
 
     public Player currentPlayer => _players[_currentPlayer];
@@ -35,8 +32,6 @@ public class Players
         currentPlayer.MovePlayer(roll);
     }
  
-
-
     public string CurrentCategory()
     {
         int playersPlace = currentPlayer.GetLocation();
@@ -65,13 +60,12 @@ public class Players
 
     public bool IsCurrentPlayerInPenaltyBox()
     {
-        return this._inPenaltyBox[_currentPlayer];
+        return currentPlayer.IsInPenaltyBox();
     }
 
     public void SetCurrentPlayerInPenaltyBox()
     {
-        Console.WriteLine(currentPlayerName + " was sent to the penalty box");
-        _inPenaltyBox[_currentPlayer] = true;
+        currentPlayer.MoveToPenaltyBox();
     }
 
     public bool DidPlayerWin()

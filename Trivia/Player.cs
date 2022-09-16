@@ -48,4 +48,15 @@ public class Player
     {
         return location;
     }
+
+    public bool IsInPenaltyBox()
+    {
+        return inPenaltyBox;
+    }
+
+    public void MoveToPenaltyBox()
+    {
+        Console.WriteLine(_name + " was sent to the penalty box");
+        inPenaltyBox = true;
+    }
 }
