@@ -16,9 +16,9 @@ namespace Trivia
         {
             Game aGame = new Game();
 
-            aGame.Players.Add("Chet");
-            aGame.Players.Add("Pat");
-            aGame.Players.Add("Sue");
+            aGame.AddPlayer("Chet");
+            aGame.AddPlayer("Pat");
+            aGame.AddPlayer("Sue");
 
             do
             {

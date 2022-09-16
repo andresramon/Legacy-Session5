@@ -17,22 +17,16 @@ namespace Trivia
             _players = new Players(this);
         }
 
-        public String currentPlayer => Players._players[_currentPlayer];
-        
-        public Players Players
-        {
-            get { return _players; }
-        }
+        public String currentPlayer => _players._players[_currentPlayer];
 
-        public int CurrentPlayer
+        public void AddPlayer(string name)
         {
-            set { _currentPlayer = value; }
-            get { return _currentPlayer; }
+            _players.Add(name);
         }
 
         public bool IsPlayable()
         {
-            return (Players.PlayersCount() >= 2);
+            return (_players.PlayersCount() >= 2);
         }
 
         public void Roll(int roll)
@@ -40,16 +34,16 @@ namespace Trivia
             Console.WriteLine(currentPlayer + " is the current player");
             Console.WriteLine("They have rolled a " + roll);
 
-            if (Players._inPenaltyBox[_currentPlayer])
+            if (_players._inPenaltyBox[_currentPlayer])
             {
                 if (roll % 2 != 0)
                 {
                     _isGettingOutOfPenaltyBox = true;
 
                     Console.WriteLine(currentPlayer + " is getting out of the penalty box");
-                    Players.MoveCurrentPlayer(roll, _currentPlayer);
+                    _players.MoveCurrentPlayer(roll, _currentPlayer);
                                      
-                    _questionare.AskQuestion(Players.CurrentCategory(_currentPlayer));
+                    _questionare.AskQuestion(_players.CurrentCategory(_currentPlayer));
                 }
                 else
                 {
@@ -59,59 +53,61 @@ namespace Trivia
             }
             else
             {
-                Players.MoveCurrentPlayer(roll, _currentPlayer);
-                _questionare.AskQuestion(Players.CurrentCategory(_currentPlayer));
+                _players.MoveCurrentPlayer(roll, _currentPlayer);
+                _questionare.AskQuestion(_players.CurrentCategory(_currentPlayer));
             }
         }
 
         public bool WasCorrectlyAnswered()
         {
-            if (Players._inPenaltyBox[_currentPlayer])
+            if (_players._inPenaltyBox[_currentPlayer])
             {
                 if (_isGettingOutOfPenaltyBox)
                 {
-                    Players.CorrectlyAnswered(_currentPlayer);
+                    _players.CorrectlyAnswered(_currentPlayer);
 
                     var winner = DidPlayerWin();
-                    _currentPlayer++;
-                    if (_currentPlayer == Players._players.Count) _currentPlayer = 0;
+                    NextPlayerTurn();
 
                     return winner;
                 }
                 else
                 {
-                    _currentPlayer++;
-                    if (_currentPlayer == Players._players.Count) _currentPlayer = 0;
+                    NextPlayerTurn();
                     return true;
                 }
             }
             else
             {
-                Players.CorrectlyAnswered(_currentPlayer);
+                _players.CorrectlyAnswered(_currentPlayer);
 
                 var winner = DidPlayerWin();
-                _currentPlayer++;
-                if (_currentPlayer == Players._players.Count) _currentPlayer = 0;
+                NextPlayerTurn();
 
                 return winner;
             }
+        }
+
+        private void NextPlayerTurn()
+        {
+            _currentPlayer++;
+            if (_currentPlayer == _players._players.Count) _currentPlayer = 0;
         }
 
         public bool WrongAnswer()
         {
             Console.WriteLine("Question was incorrectly answered");
             Console.WriteLine(currentPlayer + " was sent to the penalty box");
-            Players._inPenaltyBox[_currentPlayer] = true;
+            _players._inPenaltyBox[_currentPlayer] = true;
 
-            _currentPlayer++;
-            if (_currentPlayer == Players._players.Count) _currentPlayer = 0;
+            NextPlayerTurn();
             return true;
         }
 
 
         private bool DidPlayerWin()
         {
-            return !(Players._purses[_currentPlayer] == 6);
+            return !(_players._purses[_currentPlayer] == 6);
         }
     }
 

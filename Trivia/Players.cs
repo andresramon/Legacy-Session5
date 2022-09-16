@@ -19,9 +19,9 @@ public class Players
     public bool Add(string playerName)
     {
         _players.Add(playerName);
-        _places[_game.Players._players.Count] = 0;
-        _purses[_game.Players._players.Count] = 0;
-        _inPenaltyBox[_game.Players._players.Count] = false;
+        _places[_players.Count] = 0;
+        _purses[_players.Count] = 0;
+        _inPenaltyBox[_players.Count] = false;
 
         Console.WriteLine(playerName + " was added");
         Console.WriteLine("They are player number " + _players.Count);
