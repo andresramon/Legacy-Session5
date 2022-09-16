@@ -5,17 +5,19 @@ namespace Trivia;
 
 public class Players
 {
-    private Game _game;
+    private int _currentPlayer;
+    
     public readonly List<string> _players = new List<string>();
     public readonly int[] _places = new int[6];
     public readonly int[] _purses = new int[6];
     public readonly bool[] _inPenaltyBox = new bool[6];
 
-    public Players(Game game)
+    public Players()
     {
-        _game = game;
     }
 
+    public String currentPlayer => _players[_currentPlayer];
+    
     public bool Add(string playerName)
     {
         _players.Add(playerName);
@@ -33,18 +35,19 @@ public class Players
         return this._players.Count;
     }
 
-    public void MoveCurrentPlayer(int roll, int currentPlayer)
+    public void MoveCurrentPlayer(int roll)
     {
-        this._places[currentPlayer] = this._places[currentPlayer] + roll;
-        if (_places[currentPlayer] > 11) _places[currentPlayer] = _places[currentPlayer] - 12;
+        this._places[_currentPlayer] = this._places[_currentPlayer] + roll;
+        if (_places[_currentPlayer] > 11) _places[_currentPlayer] = _places[_currentPlayer] - 12;
 
-        Console.WriteLine(_players[currentPlayer] + "'s new location is " + _places[currentPlayer]);
+        Console.WriteLine(_players[_currentPlayer] + "'s new location is " + _places[_currentPlayer]);
 
     }
+    
 
-    public string CurrentCategory(int currentPlayer)
+    public string CurrentCategory()
     {
-        int playersPlace = _places[currentPlayer];
+        int playersPlace = _places[this._currentPlayer];
         if (playersPlace == 0) return "Pop";
         if (playersPlace == 4) return "Pop";
         if (playersPlace == 8) return "Pop";
@@ -57,13 +60,35 @@ public class Players
         return "Rock";
     }
 
-    public void CorrectlyAnswered(int player)
+    public void CorrectlyAnswered()
     {
         Console.WriteLine("Answer was correct!!!!");
-        this._purses[player]++;
-        Console.WriteLine(_players[player]
+        this._purses[_currentPlayer]++;
+        Console.WriteLine(_players[_currentPlayer]
                           + " now has "
-                          + this._purses[player]
+                          + this._purses[_currentPlayer]
                           + " Gold Coins.");
+    }
+
+    public void NextPlayerTurn()
+    {
+        _currentPlayer++;
+        if (_currentPlayer == this._players.Count) _currentPlayer = 0;
+    }
+
+    public bool IsCurrentPlayerInPenaltyBox()
+    {
+        return this._inPenaltyBox[_currentPlayer];
+    }
+
+    public void SetCurrentPlayerInPenaltyBox()
+    {
+        Console.WriteLine(currentPlayer + " was sent to the penalty box");
+        _inPenaltyBox[_currentPlayer] = true;
+    }
+
+    public bool DidPlayerWin()
+    {
+        return !(this._purses[_currentPlayer] == 6);
     }
 }
