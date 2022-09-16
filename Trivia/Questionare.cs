@@ -28,6 +28,8 @@ public class Questionare
 
     public void AskQuestion(string currentCategory)
     {
+        Console.WriteLine("The category is " + currentCategory);
+        
         if (currentCategory == "Pop")
         {
             Console.WriteLine(_popQuestions.First());
