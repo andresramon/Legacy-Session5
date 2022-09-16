@@ -8,7 +8,7 @@ public class Players
     private int _currentPlayer=0;
     private readonly List<Player> _players = new List<Player>();
 
-    public Player currentPlayer => _players[_currentPlayer];
+    private Player currentPlayer => _players[_currentPlayer];
     public String currentPlayerName => currentPlayer.ToString();
     
     public bool Add(string playerName)

@@ -34,56 +34,37 @@ namespace Trivia
 
             if (_players.IsCurrentPlayerInPenaltyBox())
             {
-                if (roll % 2 != 0)
+                if (roll % 2 == 0)
+                {
+                    Console.WriteLine(_players.currentPlayerName + " is not getting out of the penalty box");
+                    _isGettingOutOfPenaltyBox = false;
+                    return;
+                }
+                else
                 {
                     _isGettingOutOfPenaltyBox = true;
 
                     Console.WriteLine(_players.currentPlayerName + " is getting out of the penalty box");
-                    _players.MoveCurrentPlayer(roll);
-                                     
-                    _questionare.AskQuestion(_players.CurrentCategory());
-                }
-                else
-                {
-                    Console.WriteLine(_players.currentPlayerName + " is not getting out of the penalty box");
-                    _isGettingOutOfPenaltyBox = false;
                 }
             }
-            else
-            {
-                _players.MoveCurrentPlayer(roll);
-                _questionare.AskQuestion(_players.CurrentCategory());
-            }
+            
+            _players.MoveCurrentPlayer(roll);
+            _questionare.AskQuestion(_players.CurrentCategory());
         }
 
         public bool WasCorrectlyAnswered()
         {
-            if (_players.IsCurrentPlayerInPenaltyBox())
+            if (_players.IsCurrentPlayerInPenaltyBox() && !_isGettingOutOfPenaltyBox)
             {
-                if (_isGettingOutOfPenaltyBox)
-                {
-                    _players.CorrectlyAnswered();
-
-                    var winner = _players.DidPlayerWin();
-                    _players.NextPlayerTurn();
-
-                    return winner;
-                }
-                else
-                {
-                    _players.NextPlayerTurn();
-                    return true;
-                }
-            }
-            else
-            {
-                _players.CorrectlyAnswered();
-
-                var winner = _players.DidPlayerWin();
                 _players.NextPlayerTurn();
-
-                return winner;
+                return true;
             }
+
+            _players.CorrectlyAnswered();
+            var winner = _players.DidPlayerWin();
+            _players.NextPlayerTurn();
+
+            return winner;
         }
 
         public bool WrongAnswer()
