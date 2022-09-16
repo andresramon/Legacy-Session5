@@ -59,4 +59,19 @@ public class Player
         Console.WriteLine(_name + " was sent to the penalty box");
         inPenaltyBox = true;
     }
+
+    public string GetCategory()
+    {
+        int playersPlace = this.GetLocation();
+        if (playersPlace == 0) return "Pop";
+        if (playersPlace == 4) return "Pop";
+        if (playersPlace == 8) return "Pop";
+        if (playersPlace == 1) return "Science";
+        if (playersPlace == 5) return "Science";
+        if (playersPlace == 9) return "Science";
+        if (playersPlace == 2) return "Sports";
+        if (playersPlace == 6) return "Sports";
+        if (playersPlace == 10) return "Sports";
+        return "Rock";
+    }
 }
