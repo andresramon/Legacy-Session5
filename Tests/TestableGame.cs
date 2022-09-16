@@ -7,13 +7,10 @@ namespace Tests
 
     public class TestableGame : Game
     {
-        public TestableOutputInfoGame outputDevice;
-        public new QuestionsPackage questions;
-
         public TestableGame()
         {
             outputDevice = new TestableOutputInfoGame();
-            questions = new QuestionsPackage(outputDevice);
+            questions = new QuestionsPackage((TestableOutputInfoGame)outputDevice);
         }
 
         protected override void DisplayLine(string text)
@@ -23,7 +20,7 @@ namespace Tests
         
         public void ClearConsoleText()
         {
-            outputDevice.ClearConsoleText();
+            ((TestableOutputInfoGame)outputDevice).ClearConsoleText();
         }
 
         public void SetIsGettingOutOfPenaltyBox(bool value)

@@ -12,15 +12,13 @@ namespace Trivia
         private readonly int[] _purses = new int[6];
 
         protected readonly bool[] _inPenaltyBox = new bool[6];
-
-        protected readonly QuestionsPackage questions;
-        protected readonly OutputInfoGame outputDevice;
-
+        protected QuestionsPackage questions;
         protected int _currentPlayer;
         protected bool _isGettingOutOfPenaltyBox;
         protected const int _numMinPlayers = 2;
-        
-        
+
+        public OutputInfoGame outputDevice;
+
         public Game()
         {
             outputDevice = new OutputInfoGame();

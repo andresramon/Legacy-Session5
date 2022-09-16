@@ -19,8 +19,8 @@ namespace Tests
         {
             var game = TestableGame.SetupGame(2);
             game.WrongAnswer();
-            Assert.Equal("Question was incorrectly answered",game.outputDevice.consoleText[4]);
-            Assert.Equal("0 was sent to the penalty box",game.outputDevice.consoleText[5]);
+            Assert.Equal("Question was incorrectly answered",((TestableOutputInfoGame)((TestableOutputInfoGame)game.outputDevice)).consoleText[4]);
+            Assert.Equal("0 was sent to the penalty box",((TestableOutputInfoGame)game.outputDevice).consoleText[5]);
         }
 
         [Fact]
@@ -31,7 +31,7 @@ namespace Tests
             game.WrongAnswer();
             game.ClearConsoleText();
             game.WrongAnswer();
-            Assert.Equal("0 was sent to the penalty box",game.outputDevice.consoleText[1]);
+            Assert.Equal("0 was sent to the penalty box",((TestableOutputInfoGame)game.outputDevice).consoleText[1]);
         }
 
         [Fact]
@@ -39,8 +39,8 @@ namespace Tests
         {
             TestableGame game = new TestableGame();
             game.Add("Test");
-            Assert.Equal("Test was added",game.outputDevice.consoleText[0]);
-            Assert.Equal("They are player number 1",game.outputDevice.consoleText[1]);
+            Assert.Equal("Test was added",((TestableOutputInfoGame)game.outputDevice).consoleText[0]);
+            Assert.Equal("They are player number 1",((TestableOutputInfoGame)game.outputDevice).consoleText[1]);
         }
 
         [Fact]
@@ -49,7 +49,7 @@ namespace Tests
             var game = TestableGame.SetupGame(2);
             game.ClearConsoleText();
             game.WasCorrectlyAnswered();
-            Assert.Equal("Answer was correct!!!!",game.outputDevice.consoleText[0]);
+            Assert.Equal("Answer was correct!!!!",((TestableOutputInfoGame)game.outputDevice).consoleText[0]);
         }
         
         [Fact]
@@ -58,7 +58,7 @@ namespace Tests
             var game = TestableGame.SetupGame(2);
             game.ClearConsoleText();
             game.WasCorrectlyAnswered();
-            Assert.Equal("0 now has 1 Gold Coins.",game.outputDevice.consoleText[1]);
+            Assert.Equal("0 now has 1 Gold Coins.",((TestableOutputInfoGame)game.outputDevice).consoleText[1]);
         }
 
         [Fact]
@@ -81,7 +81,7 @@ namespace Tests
             game.WasCorrectlyAnswered();
             game.ClearConsoleText();
             game.WasCorrectlyAnswered();
-            Assert.Equal("0 now has 2 Gold Coins.",game.outputDevice.consoleText[1]);
+            Assert.Equal("0 now has 2 Gold Coins.",((TestableOutputInfoGame)game.outputDevice).consoleText[1]);
         }
 
         [Fact]
@@ -108,7 +108,7 @@ namespace Tests
             var game = TestableGame.SetupGame(2, true, true);
             game.ClearConsoleText();
             game.WasCorrectlyAnswered();
-            Assert.Equal("Answer was correct!!!!", game.outputDevice.consoleText[0]);
+            Assert.Equal("Answer was correct!!!!", ((TestableOutputInfoGame)game.outputDevice).consoleText[0]);
         }
 
         [Fact]
@@ -117,7 +117,7 @@ namespace Tests
             var game = TestableGame.SetupGame(2, true, true);
             game.ClearConsoleText();
             game.WasCorrectlyAnswered();
-            Assert.Equal("0 now has 1 Gold Coins.", game.outputDevice.consoleText[1]);
+            Assert.Equal("0 now has 1 Gold Coins.", ((TestableOutputInfoGame)game.outputDevice).consoleText[1]);
         }
 
         [Fact]
@@ -151,7 +151,7 @@ namespace Tests
             var game = TestableGame.SetupGame(2);
             game.ClearConsoleText();
             game.Roll(roll);
-            Assert.Equal("0's new location is "+expectedLocation, game.outputDevice.consoleText[2]);
+            Assert.Equal("0's new location is "+expectedLocation, ((TestableOutputInfoGame)game.outputDevice).consoleText[2]);
         }
 
         [Fact]
@@ -160,8 +160,8 @@ namespace Tests
             var game = TestableGame.SetupGame(2);
             game.ClearConsoleText();
             game.Roll(1);
-            Assert.Equal("0 is the current player", game.outputDevice.consoleText[0]);
-            Assert.Equal("They have rolled a 1", game.outputDevice.consoleText[1]);
+            Assert.Equal("0 is the current player", ((TestableOutputInfoGame)game.outputDevice).consoleText[0]);
+            Assert.Equal("They have rolled a 1", ((TestableOutputInfoGame)game.outputDevice).consoleText[1]);
         }
 
         [Fact]
@@ -170,7 +170,7 @@ namespace Tests
             var game = TestableGame.SetupGame(2,true,false);
             game.ClearConsoleText();
             game.Roll(2);
-            Assert.Equal("0 is not getting out of the penalty box",game.outputDevice.consoleText[2]);
+            Assert.Equal("0 is not getting out of the penalty box",((TestableOutputInfoGame)game.outputDevice).consoleText[2]);
             Assert.False(game.GetIsGettingOutOfPenaltyBox());
         }
         
@@ -180,7 +180,7 @@ namespace Tests
             var game = TestableGame.SetupGame(2,true,false);
             game.ClearConsoleText();
             game.Roll(3);
-            Assert.Equal("0 is getting out of the penalty box",game.outputDevice.consoleText[2]);
+            Assert.Equal("0 is getting out of the penalty box",((TestableOutputInfoGame)game.outputDevice).consoleText[2]);
             Assert.True(game.GetIsGettingOutOfPenaltyBox());
         }
         
@@ -192,7 +192,7 @@ namespace Tests
             var game = TestableGame.SetupGame(2,true,false);
             game.ClearConsoleText();
             game.Roll(roll);
-            Assert.Equal("0's new location is "+expectedLocation, game.outputDevice.consoleText[3]);
+            Assert.Equal("0's new location is "+expectedLocation, ((TestableOutputInfoGame)game.outputDevice).consoleText[3]);
         }
 
         [Theory]
@@ -223,11 +223,11 @@ namespace Tests
             game.Roll(roll);
             if (isInPenaltyBox)
             {
-                Assert.Equal("The category is " + expectedCategory, game.outputDevice.consoleText[4]);
+                Assert.Equal("The category is " + expectedCategory, ((TestableOutputInfoGame)game.outputDevice).consoleText[4]);
             }
             else
             {
-                Assert.Equal("The category is " + expectedCategory, game.outputDevice.consoleText[3]);
+                Assert.Equal("The category is " + expectedCategory, ((TestableOutputInfoGame)game.outputDevice).consoleText[3]);
             }
         }
         
@@ -244,11 +244,11 @@ namespace Tests
             if (isInPenaltyBox)
             {
                 
-                Assert.Equal(expectedCategoryQuestion, game.outputDevice.consoleText[5]);
+                Assert.Equal(expectedCategoryQuestion, ((TestableOutputInfoGame)game.outputDevice).consoleText[5]);
             }
             else
             {
-                Assert.Equal(expectedCategoryQuestion, game.outputDevice.consoleText[4]);
+                Assert.Equal(expectedCategoryQuestion, ((TestableOutputInfoGame)game.outputDevice).consoleText[4]);
             }
         }
         
@@ -264,7 +264,7 @@ namespace Tests
             game.ClearConsoleText();
             
             game.Roll(roll2);
-            Assert.Equal(expectedCategoryQuestion, game.outputDevice.consoleText[4]);
+            Assert.Equal(expectedCategoryQuestion, ((TestableOutputInfoGame)game.outputDevice).consoleText[4]);
            
         }
     }
