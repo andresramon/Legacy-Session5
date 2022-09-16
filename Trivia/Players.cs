@@ -54,12 +54,7 @@ public class Players
 
     public void CorrectlyAnswered()
     {
-        Console.WriteLine("Answer was correct!!!!");
-        this._purses[_currentPlayer]++;
-        Console.WriteLine(currentPlayerName
-                          + " now has "
-                          + this._purses[_currentPlayer]
-                          + " Gold Coins.");
+        currentPlayer.CorrectlyAnswered();
     }
 
     public void NextPlayerTurn()
@@ -81,6 +76,6 @@ public class Players
 
     public bool DidPlayerWin()
     {
-        return !(this._purses[_currentPlayer] == 6);
+        return currentPlayer.DidPlayerWinn();
     }
 }

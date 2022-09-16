@@ -29,6 +29,21 @@ public class Player
         Console.WriteLine(_name + "'s new location is " + location);
     }
 
+    public void CorrectlyAnswered()
+    {
+        Console.WriteLine("Answer was correct!!!!");
+        purse++;
+        Console.WriteLine(_name
+                          + " now has "
+                          + purse
+                          + " Gold Coins.");
+        
+    }
+
+    public bool DidPlayerWinn()
+    {
+        return !(purse == 6);
+    }
     public int GetLocation()
     {
         return location;
