@@ -5,10 +5,10 @@ namespace Trivia;
 
 public class Questionare
 {
-    public readonly LinkedList<string> _popQuestions = new LinkedList<string>();
-    public readonly LinkedList<string> _scienceQuestions = new LinkedList<string>();
-    public readonly LinkedList<string> _sportsQuestions = new LinkedList<string>();
-    public readonly LinkedList<string> _rockQuestions = new LinkedList<string>();
+    private readonly LinkedList<string> _popQuestions = new LinkedList<string>();
+    private readonly LinkedList<string> _scienceQuestions = new LinkedList<string>();
+    private readonly LinkedList<string> _sportsQuestions = new LinkedList<string>();
+    private readonly LinkedList<string> _rockQuestions = new LinkedList<string>();
 
     public Questionare()
     {
