@@ -1,9 +1,8 @@
 {
-  "stryker-config":
-  {
+  "stryker-config": {
     "solution": "../Trivia.sln"
   },
-  "reporters":[
+  "reporters": [
     "ConsoleProgressBar",
     "ConsoleReport"
   ]

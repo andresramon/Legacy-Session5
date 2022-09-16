@@ -5,12 +5,15 @@ namespace Trivia;
 
 public class Players
 {
-    private int _currentPlayer=0;
-    private readonly List<Player> _players = new List<Player>();
+    private readonly List<Player> _players = new();
+    private int _currentPlayer;
+    public string currentPlayerName => getCurrentPlayer().ToString();
 
-    public Player getCurrentPlayer() => _players[_currentPlayer];
-    public String currentPlayerName => getCurrentPlayer().ToString();
-    
+    public Player getCurrentPlayer()
+    {
+        return _players[_currentPlayer];
+    }
+
     public bool Add(string playerName)
     {
         _players.Add(new Player(playerName));
@@ -22,11 +25,11 @@ public class Players
 
     public int PlayersCount()
     {
-        return this._players.Count;
+        return _players.Count;
     }
 
     public void NextPlayerTurn()
     {
-        if (++_currentPlayer == this._players.Count) _currentPlayer = 0;
+        if (++_currentPlayer == _players.Count) _currentPlayer = 0;
     }
 }

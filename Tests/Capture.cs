@@ -5,7 +5,7 @@ namespace Tests;
 
 public class Capture
 {
-    static readonly object monitor = new object();
+    private static readonly object monitor = new();
 
     public static string ConsoleOutput(Action action)
     {

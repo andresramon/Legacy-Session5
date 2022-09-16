@@ -1,6 +1,5 @@
 namespace Trivia;
 
-
 public enum Categories
 {
     Pop,
