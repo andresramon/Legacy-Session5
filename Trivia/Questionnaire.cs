@@ -3,36 +3,33 @@ using System.Collections.Generic;
 using System.Linq;
 namespace Trivia;
 
-public class Questionare
+public class Questionnaire
 {
-    public enum Categories
-    {
-        Pop,
-        Science,
-        Sports,
-        Rock
-    }
-    private readonly LinkedList<string> _popQuestions = new LinkedList<string>();
-    private readonly LinkedList<string> _scienceQuestions = new LinkedList<string>();
-    private readonly LinkedList<string> _sportsQuestions = new LinkedList<string>();
-    private readonly LinkedList<string> _rockQuestions = new LinkedList<string>();
+    private readonly LinkedList<string> _popQuestions;
+    private readonly LinkedList<string> _scienceQuestions;
+    private readonly LinkedList<string> _sportsQuestions;
+    private readonly LinkedList<string> _rockQuestions ;
 
-    public Questionare()
+    public Questionnaire(int numberOfQuestions)
     {
-        InitQuestionare();
+    _popQuestions = CreateQuestionsList(Categories.Pop,numberOfQuestions);
+     _scienceQuestions =  CreateQuestionsList(Categories.Science,numberOfQuestions);
+     _sportsQuestions  = CreateQuestionsList(Categories.Sports,numberOfQuestions);
+     _rockQuestions  = CreateQuestionsList(Categories.Rock,numberOfQuestions);
+
     }
 
-    public void InitQuestionare()
+    public  LinkedList<string> CreateQuestionsList(Categories category, int numberOfQuestions)
     {
-        for (var i = 0; i < 50; i++)
+        LinkedList<string> questions = new LinkedList<string>();
+       
+        for (int i = 0; i < numberOfQuestions; i++)
         {
-            this._popQuestions.AddLast($"{Categories.Pop} Question " + i);
-            this._scienceQuestions.AddLast($"{Categories.Science} Question " + i);
-            this._sportsQuestions.AddLast($"{Categories.Sports} Question " + i);
-            this._rockQuestions.AddLast($"{Categories.Rock} Question " + i);
+            questions.AddLast($"{category} Question " + i);
         }
-    }
 
+        return questions;
+    }
     public void AskQuestion(Categories currentCategory)
     {
         

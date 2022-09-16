@@ -8,7 +8,7 @@ namespace Trivia
     {
         
         private bool _isGettingOutOfPenaltyBox;
-        private readonly Questionare _questionare;
+        private readonly Questionnaire _questionnaire;
         private readonly Players _players;
         private Player currentPlayer =>_players.getCurrentPlayer();
 
@@ -17,7 +17,7 @@ namespace Trivia
         
         public Game()
         {
-            _questionare = new Questionare();
+            _questionnaire = new Questionnaire(50);
             _players = new Players();
         }
       
@@ -46,7 +46,7 @@ namespace Trivia
             }
             
             currentPlayer.MovePlayer(roll);
-            _questionare.AskQuestion(currentPlayer.GetCategory());
+            _questionnaire.AskQuestion(currentPlayer.GetCategory());
         }
         
 
