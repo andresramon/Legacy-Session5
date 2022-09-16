@@ -29,7 +29,7 @@ namespace Trivia
 
         public void Roll(int roll)
         {
-            Console.WriteLine(_players.currentPlayer + " is the current player");
+            Console.WriteLine(_players.currentPlayerName + " is the current player");
             Console.WriteLine("They have rolled a " + roll);
 
             if (_players.IsCurrentPlayerInPenaltyBox())
@@ -38,14 +38,14 @@ namespace Trivia
                 {
                     _isGettingOutOfPenaltyBox = true;
 
-                    Console.WriteLine(_players.currentPlayer + " is getting out of the penalty box");
+                    Console.WriteLine(_players.currentPlayerName + " is getting out of the penalty box");
                     _players.MoveCurrentPlayer(roll);
                                      
                     _questionare.AskQuestion(_players.CurrentCategory());
                 }
                 else
                 {
-                    Console.WriteLine(_players.currentPlayer + " is not getting out of the penalty box");
+                    Console.WriteLine(_players.currentPlayerName + " is not getting out of the penalty box");
                     _isGettingOutOfPenaltyBox = false;
                 }
             }

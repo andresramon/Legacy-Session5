@@ -5,25 +5,20 @@ namespace Trivia;
 
 public class Players
 {
-    private int _currentPlayer;
+    private int _currentPlayer=0;
 
-    private readonly List<string> _players = new List<string>();
+    private readonly List<Player> _players = new List<Player>();
     private readonly int[] _places = new int[6];
     private readonly int[] _purses = new int[6];
     private readonly bool[] _inPenaltyBox = new bool[6];
 
-    public Players()
-    {
-    }
 
-    public String currentPlayer => _players[_currentPlayer];
+    public Player currentPlayer => _players[_currentPlayer];
+    public String currentPlayerName => currentPlayer.ToString();
     
     public bool Add(string playerName)
     {
-        _players.Add(playerName);
-        _places[_players.Count] = 0;
-        _purses[_players.Count] = 0;
-        _inPenaltyBox[_players.Count] = false;
+        _players.Add(new Player(playerName));
 
         Console.WriteLine(playerName + " was added");
         Console.WriteLine("They are player number " + _players.Count);
@@ -37,17 +32,14 @@ public class Players
 
     public void MoveCurrentPlayer(int roll)
     {
-        this._places[_currentPlayer] = this._places[_currentPlayer] + roll;
-        if (_places[_currentPlayer] > 11) _places[_currentPlayer] = _places[_currentPlayer] - 12;
-
-        Console.WriteLine(_players[_currentPlayer] + "'s new location is " + _places[_currentPlayer]);
-
+        currentPlayer.MovePlayer(roll);
     }
-    
+ 
+
 
     public string CurrentCategory()
     {
-        int playersPlace = _places[this._currentPlayer];
+        int playersPlace = currentPlayer.GetLocation();
         if (playersPlace == 0) return "Pop";
         if (playersPlace == 4) return "Pop";
         if (playersPlace == 8) return "Pop";
@@ -64,7 +56,7 @@ public class Players
     {
         Console.WriteLine("Answer was correct!!!!");
         this._purses[_currentPlayer]++;
-        Console.WriteLine(_players[_currentPlayer]
+        Console.WriteLine(currentPlayerName
                           + " now has "
                           + this._purses[_currentPlayer]
                           + " Gold Coins.");
@@ -83,7 +75,7 @@ public class Players
 
     public void SetCurrentPlayerInPenaltyBox()
     {
-        Console.WriteLine(currentPlayer + " was sent to the penalty box");
+        Console.WriteLine(currentPlayerName + " was sent to the penalty box");
         _inPenaltyBox[_currentPlayer] = true;
     }
 
