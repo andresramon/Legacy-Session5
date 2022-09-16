@@ -56,4 +56,14 @@ public class Players
         if (playersPlace == 10) return "Sports";
         return "Rock";
     }
+
+    public void CorrectlyAnswered(int player)
+    {
+        Console.WriteLine("Answer was correct!!!!");
+        this._purses[player]++;
+        Console.WriteLine(_players[player]
+                          + " now has "
+                          + this._purses[player]
+                          + " Gold Coins.");
+    }
 }

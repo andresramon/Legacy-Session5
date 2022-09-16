@@ -17,7 +17,7 @@ namespace Trivia
             _players = new Players(this);
         }
 
-        String currentPlayer => Players._players[_currentPlayer];
+        public String currentPlayer => Players._players[_currentPlayer];
         
         public Players Players
         {
@@ -70,12 +70,7 @@ namespace Trivia
             {
                 if (_isGettingOutOfPenaltyBox)
                 {
-                    Console.WriteLine("Answer was correct!!!!");
-                    Players._purses[_currentPlayer]++;
-                    Console.WriteLine(currentPlayer
-                                      + " now has "
-                                      + Players._purses[_currentPlayer]
-                                      + " Gold Coins.");
+                    Players.CorrectlyAnswered(_currentPlayer);
 
                     var winner = DidPlayerWin();
                     _currentPlayer++;
@@ -92,12 +87,7 @@ namespace Trivia
             }
             else
             {
-                Console.WriteLine("Answer was corrent!!!!");
-                Players._purses[_currentPlayer]++;
-                Console.WriteLine(currentPlayer
-                                  + " now has "
-                                  + Players._purses[_currentPlayer]
-                                  + " Gold Coins.");
+                Players.CorrectlyAnswered(_currentPlayer);
 
                 var winner = DidPlayerWin();
                 _currentPlayer++;
