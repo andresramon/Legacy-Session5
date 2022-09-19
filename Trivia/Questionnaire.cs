@@ -4,8 +4,11 @@ using System.Linq;
 
 namespace Trivia;
 
-public class Questionnaire
+public class Questionnaire : Publisher
 {
+
+
+    
     private readonly LinkedList<string> _popQuestions;
     private readonly LinkedList<string> _rockQuestions;
     private readonly LinkedList<string> _scienceQuestions;
@@ -32,12 +35,13 @@ public class Questionnaire
     {
         var questionsList = GetListByCategory(currentCategory);
 
-        Console.WriteLine("The category is " + currentCategory);
-        Console.WriteLine(questionsList.First());
+        Raise("The category is " + currentCategory);
+        Raise(questionsList.First());
 
         questionsList.RemoveFirst();
     }
 
+    
     private LinkedList<string> GetListByCategory(Categories currentCategory)
     {
         LinkedList<string> questionsList;

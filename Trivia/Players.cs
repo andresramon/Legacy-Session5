@@ -3,10 +3,11 @@ using System.Collections.Generic;
 
 namespace Trivia;
 
-public class Players
+public class Players : Publisher
 {
     private readonly List<Player> _players = new();
     private int _currentPlayer;
+
     public string currentPlayerName => getCurrentPlayer().ToString();
 
     public Player getCurrentPlayer()
@@ -14,13 +15,15 @@ public class Players
         return _players[_currentPlayer];
     }
 
-    public bool Add(string playerName)
+    public Player Add(string playerName)
     {
-        _players.Add(new Player(playerName));
+        var player = new Player(playerName);
+        _players.Add(player);
 
-        Console.WriteLine(playerName + " was added");
-        Console.WriteLine("They are player number " + _players.Count);
-        return true;
+        Raise(playerName + " was added");
+        Raise("They are player number " + _players.Count);
+        
+        return player;
     }
 
     public int PlayersCount()

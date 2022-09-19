@@ -6,20 +6,23 @@ public class Game
 {
     private readonly Players _players;
     private readonly Questionnaire _questionnaire;
-
     private bool _isGettingOutOfPenaltyBox;
-
+    private Printer _printer = new Printer();
     public Game()
     {
         _questionnaire = new Questionnaire(50);
+        _questionnaire.OnChange += message => _printer.Print(message);
+       
         _players = new Players();
+        _players.OnChange += message => _printer.Print(message);
     }
 
     private Player currentPlayer => _players.getCurrentPlayer();
 
     public void AddPlayer(string name)
     {
-        _players.Add(name);
+        var newPlayer = _players.Add(name);
+        newPlayer.OnChange += s => _printer.Print(s);
     }
 
     public bool IsPlayable()
@@ -32,21 +35,21 @@ public class Game
     {
         var playerName = _players.currentPlayerName;
 
-        Console.WriteLine(playerName + " is the current player");
-        Console.WriteLine("They have rolled a " + roll);
+        _printer.Print(playerName + " is the current player");
+        _printer.Print("They have rolled a " + roll);
 
         if (currentPlayer.IsInPenaltyBox())
         {
             if (IsEvenRoll(roll))
             {
-                Console.WriteLine(playerName + " is not getting out of the penalty box");
+                _printer.Print(playerName + " is not getting out of the penalty box");
                 _isGettingOutOfPenaltyBox = false;
                 return;
             }
 
             _isGettingOutOfPenaltyBox = true;
 
-            Console.WriteLine(playerName + " is getting out of the penalty box");
+            _printer.Print(playerName + " is getting out of the penalty box");
         }
 
         currentPlayer.MovePlayer(roll);
@@ -71,7 +74,7 @@ public class Game
 
     public bool WrongAnswer()
     {
-        Console.WriteLine("Question was incorrectly answered");
+        _printer.Print("Question was incorrectly answered");
         currentPlayer.MoveToPenaltyBox();
         _players.NextPlayerTurn();
         return true;

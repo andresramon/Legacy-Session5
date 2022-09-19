@@ -2,7 +2,7 @@ using System;
 
 namespace Trivia;
 
-public class Player
+public class Player : Publisher
 {
     private readonly string _name;
     private bool inPenaltyBox;
@@ -27,17 +27,17 @@ public class Player
         location = location + roll;
         if (location > 11) location = location - 12;
 
-        Console.WriteLine(_name + "'s new location is " + location);
+        Raise(_name + "'s new location is " + location);
     }
 
     public void CorrectlyAnswered()
     {
-        Console.WriteLine("Answer was correct!!!!");
+        Raise("Answer was correct!!!!");
         purse++;
-        Console.WriteLine(_name
-                          + " now has "
-                          + purse
-                          + " Gold Coins.");
+        Raise(_name
+              + " now has "
+              + purse
+              + " Gold Coins.");
     }
 
     public bool DidPlayerWin()
@@ -57,7 +57,7 @@ public class Player
 
     public void MoveToPenaltyBox()
     {
-        Console.WriteLine(_name + " was sent to the penalty box");
+        Raise(_name + " was sent to the penalty box");
         inPenaltyBox = true;
     }
 
