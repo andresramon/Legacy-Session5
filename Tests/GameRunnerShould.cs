@@ -21,8 +21,7 @@ public class GameRunnerShould
             ToList(). //
             ForEach(random => GameRunner.Run(random));
 
-
-        var random = new Random(1001);
+        
         var output = Capture.ConsoleOutput(runGames);
         Approvals.Verify(output);
     }
